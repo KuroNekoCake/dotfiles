@@ -5,8 +5,31 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-#################################  HISTORY  #################################
-# history
+# -----------------------------
+# General
+# -----------------------------
+setopt auto_cd #cd省略
+setopt no_beep #ピープ音を鳴らさないように変更
+setopt auto_param_keys #括弧の対応を自動補完
+setopt correct #コマンドスペルチェック
+setopt correct_all #コマンドラインのスペルチェック
+setopt complete_in_word # 単語の入力途中でもtab補完有効化
+setopt correct # コマンドミスを修正
+setopt auto_list # 補完候補を一覧表示にする
+setopt auto_menu # TAB で順に補完候補を切り替える
+setopt no_flow_control
+autoload -Uz compinit && compinit # 自動補完
+
+# -----------------------------
+# Color
+# -----------------------------
+
+autoload -Uz colors ; colors #色を使用
+export LSCOLORS=Exfxcxdxbxegedabagacad #色の設定
+export LS_COLORS='di=01;34:ln=01;35:so=01;32:ex=01;31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30' # 補完時の色設定
+autoload -U colors ; colors ; zstyle ':completion:*' list-colors "${LS_COLORS}" # 補完候補に色つける
+
+# -----------------------------
 HISTFILE=$HOME/.zsh-history # 履歴を保存するファイル
 HISTSIZE=100000             # メモリ上に保存する履歴のサイズ
 SAVEHIST=1000000            # 上述のファイルに保存する履歴のサイズ
@@ -14,9 +37,12 @@ SAVEHIST=1000000            # 上述のファイルに保存する履歴のサ�
 # share .zshhistory
 setopt inc_append_history   # 実行時に履歴をファイルにに追加していく
 setopt share_history        # 履歴を他のシェルとリアルタイム共有する
+setopt hist_ignore_all_dups #すでにhistoryにあるコマンドは残さない
 
-#################################  COMPLEMENT  #################################
-# enable completion
+# -----------------------------
+# COMPLEMENT
+# -----------------------------
+
 autoload -Uz compinit && compinit
 
 # 補完候補をそのまま探す -> 小文字を大文字に変えて探す -> 大文字を小文字に変えて探す
@@ -30,18 +56,6 @@ zstyle ':completion:*' group-name ''
 ### 補完侯補をメニューから選択する。
 ### select=2: 補完候補を一覧から選択する。補完候補が2つ以上なければすぐに補完する。
 zstyle ':completion:*:default' menu select=2
-#################################  OTHERS  #################################
-# automatically change directory when dir name is typed
-setopt auto_cd
-
-# disable ctrl+s, ctrl+q
-setopt no_flow_control
-
-### End of Zinit's installer chunk
-SCRIPT_DIR=$HOME/dotfiles
-
-source $SCRIPT_DIR/zsh/plugins.zsh
-source $SCRIPT_DIR/zsh/config.zsh
 
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
