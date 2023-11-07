@@ -19,6 +19,7 @@ setopt auto_list # 補完候補を一覧表示にする
 setopt auto_menu # TAB で順に補完候補を切り替える
 setopt no_flow_control
 autoload -Uz compinit && compinit # 自動補完
+function chpwd() { ls } # 自動ls
 
 # -----------------------------
 # Color
@@ -29,6 +30,8 @@ export LSCOLORS=Exfxcxdxbxegedabagacad #色の設定
 export LS_COLORS='di=01;34:ln=01;35:so=01;32:ex=01;31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30' # 補完時の色設定
 autoload -U colors ; colors ; zstyle ':completion:*' list-colors "${LS_COLORS}" # 補完候補に色つける
 
+# -----------------------------
+# History
 # -----------------------------
 HISTFILE=$HOME/.zsh-history # 履歴を保存するファイル
 HISTSIZE=100000             # メモリ上に保存する履歴のサイズ
@@ -57,7 +60,10 @@ zstyle ':completion:*' group-name ''
 ### select=2: 補完候補を一覧から選択する。補完候補が2つ以上なければすぐに補完する。
 zstyle ':completion:*:default' menu select=2
 
-### Added by Zinit's installer
+# -----------------------------
+# Added by Zinit's installer
+# -----------------------------
+
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
     print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
     command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
@@ -69,8 +75,14 @@ fi
 source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
-### End of Zinit's installer chunk
 
+# -----------------------------
+# End of Zinit's installer chunk
+# -----------------------------
+
+# -----------------------------
+# PATH
+# -----------------------------
 SCRIPT_DIR=$HOME/dotfiles
 
 source $SCRIPT_DIR/zsh/plugins.zsh
